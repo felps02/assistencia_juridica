@@ -1,4 +1,4 @@
-# Almeida & Ribeiro Assistência Jurídica
+# F&G Assistência Jurídica
 
 Aplicação web em monorepo para captação, gestão e acompanhamento de solicitações de assistência jurídica. O projeto possui frontend Next.js, backend Express com API REST, Prisma ORM, MySQL, upload de documentos, autenticação administrativa, painel interno e preparação para deploy no Render com banco MySQL no Aiven.
 
