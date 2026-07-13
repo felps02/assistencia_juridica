@@ -1,0 +1,138 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  ADMIN
+  ATTENDANT
+}
+
+enum RequestStatus {
+  NEW
+  UNDER_REVIEW
+  WAITING_CLIENT
+  IN_PROGRESS
+  COMPLETED
+  CANCELLED
+}
+
+enum CustomerType {
+  PERSON
+  COMPANY
+}
+
+enum LegalArea {
+  LABOR
+  CIVIL
+  FAMILY
+  SOCIAL_SECURITY
+  CONSUMER
+  BUSINESS
+  REAL_ESTATE
+  OTHER
+}
+
+enum ContactPreference {
+  WHATSAPP
+  PHONE
+  EMAIL
+  VIDEO_CALL
+}
+
+model User {
+  id           String                  @id @default(uuid())
+  name         String
+  email        String                  @unique
+  passwordHash String
+  role         UserRole                @default(ATTENDANT)
+  active       Boolean                 @default(true)
+  createdAt    DateTime                @default(now())
+  updatedAt    DateTime                @updatedAt
+  notes        RequestNote[]
+  histories    RequestStatusHistory[]
+
+  @@map("users")
+}
+
+model LegalRequest {
+  id                   String                 @id @default(uuid())
+  protocol             String                 @unique
+  fullName             String
+  email                String
+  phone                String
+  document             String?
+  city                 String
+  state                String
+  customerType         CustomerType
+  legalArea            LegalArea
+  contactPreference    ContactPreference
+  preferredContactTime String?
+  caseDescription      String                 @db.Text
+  status               RequestStatus          @default(NEW)
+  consentAccepted      Boolean                @default(false)
+  consentAcceptedAt    DateTime?
+  ipAddress            String?
+  userAgent            String?
+  createdAt            DateTime               @default(now())
+  updatedAt            DateTime               @updatedAt
+  attachments          Attachment[]
+  notes                RequestNote[]
+  histories            RequestStatusHistory[]
+
+  @@index([status])
+  @@index([legalArea])
+  @@index([state])
+  @@index([createdAt])
+  @@map("legal_requests")
+}
+
+model Attachment {
+  id             String       @id @default(uuid())
+  legalRequestId String
+  originalName   String
+  storedName     String
+  fileUrl        String
+  mimeType       String
+  fileSize       Int
+  createdAt      DateTime     @default(now())
+  legalRequest   LegalRequest @relation(fields: [legalRequestId], references: [id], onDelete: Cascade)
+
+  @@index([legalRequestId])
+  @@map("attachments")
+}
+
+model RequestNote {
+  id             String       @id @default(uuid())
+  legalRequestId String
+  userId         String
+  content        String       @db.Text
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+  legalRequest   LegalRequest @relation(fields: [legalRequestId], references: [id], onDelete: Cascade)
+  user           User         @relation(fields: [userId], references: [id])
+
+  @@index([legalRequestId])
+  @@index([userId])
+  @@map("request_notes")
+}
+
+model RequestStatusHistory {
+  id             String         @id @default(uuid())
+  legalRequestId String
+  userId         String?
+  previousStatus RequestStatus?
+  newStatus      RequestStatus
+  createdAt      DateTime       @default(now())
+  legalRequest   LegalRequest   @relation(fields: [legalRequestId], references: [id], onDelete: Cascade)
+  user           User?          @relation(fields: [userId], references: [id])
+
+  @@index([legalRequestId])
+  @@index([userId])
+  @@map("request_status_history")
+}
+
