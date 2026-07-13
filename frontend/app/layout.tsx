@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Almeida & Ribeiro Assistência Jurídica",
+  title: " F&G Assistência Jurídica",
   description: "Assistência jurídica com segurança, transparência e compromisso."
 };
 

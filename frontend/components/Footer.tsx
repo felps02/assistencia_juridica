@@ -1,4 +1,4 @@
-import { Facebook, Instagram, Linkedin, Mail, MapPin, Phone } from "lucide-react";
+import { Instagram, Linkedin, Mail, MapPin, Phone } from "lucide-react";
 import Link from "next/link";
 import { company } from "@/lib/company";
 
@@ -16,7 +16,6 @@ export function Footer() {
           <div className="mt-5 flex gap-3">
             <a aria-label="Instagram" className="rounded-lg bg-white/10 p-2 hover:bg-white/20" href={company.socials.instagram}><Instagram size={18} /></a>
             <a aria-label="LinkedIn" className="rounded-lg bg-white/10 p-2 hover:bg-white/20" href={company.socials.linkedin}><Linkedin size={18} /></a>
-            <a aria-label="Facebook" className="rounded-lg bg-white/10 p-2 hover:bg-white/20" href={company.socials.facebook}><Facebook size={18} /></a>
           </div>
         </div>
         <div>
