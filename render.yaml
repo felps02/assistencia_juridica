@@ -12,7 +12,7 @@ services:
         value: 20
  
       - key: NEXT_PUBLIC_API_URL
-        sync: false
+        value: https://assistencia-juridica-backend.onrender.com/api
  
       - key: NEXT_PUBLIC_WHATSAPP_NUMBER
         sync: false
@@ -46,7 +46,7 @@ services:
         value: 8h
  
       - key: FRONTEND_URL
-        sync: false
+        value: https://assistencia-juridica-frontend.onrender.com
  
       - key: MAX_FILE_SIZE_MB
         value: 10
